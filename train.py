@@ -1,20 +1,20 @@
-import gym
+import gymnasium as gym
 from agent import Agent
 import matplotlib.pyplot as plt
 
 # env = gym.make("LunarLander-v2", render_mode="human")
-env = gym.make("LunarLander-v2")
+env = gym.make("LunarLander-v3")
 
 
 agent = Agent(
     state_dim=env.observation_space.shape[0],
-    hidden_dim=1024,
-    action_dim=4,
+    hidden_dim=256,
+    action_dim=env.action_space.n,
     device='cpu',
 )
 
 # pretrain
-agent.load()
+# agent.load()
 
 reward_per_step = []
 reward_per_episode = []
