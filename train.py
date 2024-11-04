@@ -18,6 +18,8 @@ agent = Agent(
 
 reward_per_step = []
 reward_per_episode = []
+entropy_step = []
+value_step = []
 
 for episode_i in range(500):
     state, info = env.reset()
@@ -37,8 +39,11 @@ for episode_i in range(500):
         agent.buffer.dones.append(done)
         
         state = next_state
+        
         episode_return += reward
         reward_per_step.append(reward)
+        entropy_step.append(agent.entropy)
+        value_step.append(agent.value)
         
     print(f'{episode_i=} {episode_return=}')
     reward_per_episode.append(episode_return)
@@ -51,7 +56,23 @@ for episode_i in range(500):
 
 agent.save()
 
+plt.subplot(2, 2, 1)
 plt.plot(reward_per_episode)
+plt.title("reward_per_episode")
+
+plt.subplot(2, 2, 2)
+plt.plot(reward_per_step)
+plt.title("reward_per_step")
+
+plt.subplot(2, 2, 3)
+plt.plot(entropy_step)
+plt.title("entropy")
+
+plt.subplot(2, 2, 4)
+plt.plot(value_step)
+plt.title("value")
+
+
 plt.show()
 
 env.close()

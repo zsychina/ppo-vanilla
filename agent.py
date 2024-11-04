@@ -24,12 +24,12 @@ class Agent:
                  state_dim,
                  hidden_dim,
                  action_dim,
-                 lmbda=0.95,
-                 gamma=0.99,
+                 lmbda=0.90,
+                 gamma=0.90,
                  eps_clip=0.2,
                  K_epochs=10,
-                 lr_actor=3e-4,
-                 lr_critic=1e-3,
+                 lr_actor=1e-4,
+                 lr_critic=1e-4,
                  device='cpu',
                  model_path='./checkpoint/'):
         
@@ -61,6 +61,11 @@ class Agent:
         action_dist = torch.softmax(actor_out, dim=-1)
         action_dist = torch.distributions.Categorical(action_dist)
         action = action_dist.sample()
+        
+        # debug
+        self.entropy = action_dist.entropy().item()
+        self.value = self.critic(state).item()
+        
         return action.item()
         
     def update(self):
